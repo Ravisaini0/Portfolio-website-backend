@@ -29,7 +29,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of( "http://localhost:3000",
-                "https://portfolio-website-ravisaini0s-projects.vercel.app"));
+                "https://portfolio-website-eight-theta-19.vercel.app"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
