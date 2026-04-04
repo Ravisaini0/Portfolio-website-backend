@@ -2,7 +2,9 @@ package com.example.portfolio;
 
 import java.util.List;
 
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.*;
@@ -15,9 +17,10 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .httpBasic(httpBasic -> httpBasic.disable()) // 🔥 FIX 401
-            .formLogin(form -> form.disable()) // 🔥 disable login form
+            .httpBasic(httpBasic -> httpBasic.disable())
+            .formLogin(form -> form.disable())
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 🔥 IMPORTANT
                 .anyRequest().permitAll()
             );
 
@@ -28,11 +31,16 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of( "http://localhost:3000",
-                "https://portfolio-website-eight-theta-19.vercel.app"));
+        config.setAllowedOriginPatterns(List.of(
+            "http://localhost:3000",
+            "https://*.vercel.app"
+        ));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+
+        // ⚠️ IMPORTANT FIX
+        config.setAllowCredentials(false); // 🔥 ye change kar
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
