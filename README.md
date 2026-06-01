@@ -382,7 +382,7 @@ When the app starts, it creates default data if missing:
 - 3 default certificates
 - 4 about cards
 - 1 work experience entry
-- 15 skill items
+- 14 skill items
 
 This keeps the portfolio populated on a fresh local database.
 

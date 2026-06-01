@@ -103,7 +103,7 @@ public class ContentController {
         profile.setSkillsDescription("A comprehensive set of technical skills spanning frontend, backend, and database technologies.");
         profile.setFrontendSkills("HTML:90,CSS:85,JavaScript:80,React:75,Bootstrap:85");
         profile.setBackendSkills("Java:85,Spring Boot:80,REST APIs:80,Servlets:75,JDBC:75");
-        profile.setToolsSkills("MySQL:80,Git:75,GitHub:80,VS Code:85,Eclipse:80");
+        profile.setToolsSkills("MySQL:80,GitHub:80,VS Code:85,Eclipse:80");
         return profile;
     }
 }

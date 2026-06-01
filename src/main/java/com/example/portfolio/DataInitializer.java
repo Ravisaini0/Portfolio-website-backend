@@ -62,36 +62,45 @@ public class DataInitializer implements CommandLineRunner {
             return adminRepository.save(admin);
         });
 
-        seedProject("Laundry Management System", "A comprehensive Spring Boot backend system featuring authentication, user management, admin controls, delivery management, shop management, and complete order handling workflows.", "Spring Boot,Java,MySQL,REST API");
-        seedProject("E-Commerce Platform", "Full-stack e-commerce application with product catalog, shopping cart, user authentication, and secure checkout process. Built with modern web technologies.", "React,Spring Boot,MySQL,Bootstrap");
-        seedProject("CRUD Application", "A Login and Registration System built using Java Servlets, JSP, and MySQL. Implements secure authentication and complete CRUD operations for user management.", "Java Servlets,JSP,MySQL,JDBC");
+        if (projectRepository.count() == 0) {
+            seedProject("Laundry Management System", "A comprehensive Spring Boot backend system featuring authentication, user management, admin controls, delivery management, shop management, and complete order handling workflows.", "Spring Boot,Java,MySQL,REST API");
+            seedProject("E-Commerce Platform", "Full-stack e-commerce application with product catalog, shopping cart, user authentication, and secure checkout process. Built with modern web technologies.", "React,Spring Boot,MySQL,Bootstrap");
+            seedProject("CRUD Application", "A Login and Registration System built using Java Servlets, JSP, and MySQL. Implements secure authentication and complete CRUD operations for user management.", "Java Servlets,JSP,MySQL,JDBC");
+        }
 
-        seedCertificate("Web Development in JAVA", "Technoglobe", "120 Days", "Jaipur - Gopalpura", "16 Feb 2026", "Training Certificate", "/certificates/Technoglobe.png");
-        seedCertificate("Web Page Designing & Development Program", "BECIL (Broadcast Engineering Consultants India Limited)", "2 Months", "Jaipur", "22 Nov 2025", "Course Certificate", "/certificates/Becil.png");
-        seedCertificate("API Integration Specialist", "Growbizz.io", "3 Months", "Jaipur", "18 Mar 2026", "Experience Letter", "/certificates/Growbizz.png");
+        if (certificateRepository.count() == 0) {
+            seedCertificate("Web Development in JAVA", "Technoglobe", "120 Days", "Jaipur - Gopalpura", "16 Feb 2026", "Training Certificate", "/certificates/Technoglobe.png");
+            seedCertificate("Web Page Designing & Development Program", "BECIL (Broadcast Engineering Consultants India Limited)", "2 Months", "Jaipur", "22 Nov 2025", "Course Certificate", "/certificates/Becil.png");
+            seedCertificate("API Integration Specialist", "Growbizz.io", "3 Months", "Jaipur", "18 Mar 2026", "Experience Letter", "/certificates/Growbizz.png");
+        }
 
-        seedAboutItem("Professional Experience", "Java Full Stack Developer Trainee at Technoglobe, working on real-world projects and REST APIs.", "briefcase");
-        seedAboutItem("Technical Skills", "Proficient in Java, Spring Boot, React, and MySQL with hands-on project experience.", "code");
-        seedAboutItem("Education", "B.Com from R.N. Ruia Government College, continuously learning new technologies.", "education");
-        seedAboutItem("Team Player", "Strong teamwork and communication skills developed through collaborative projects.", "team");
+        if (aboutItemRepository.count() == 0) {
+            seedAboutItem("Professional Experience", "Java Full Stack Developer Trainee at Technoglobe, working on real-world projects and REST APIs.", "briefcase");
+            seedAboutItem("Technical Skills", "Proficient in Java, Spring Boot, React, and MySQL with hands-on project experience.", "code");
+            seedAboutItem("Education", "B.Com from R.N. Ruia Government College, continuously learning new technologies.", "education");
+            seedAboutItem("Team Player", "Strong teamwork and communication skills developed through collaborative projects.", "team");
+        }
 
-        seedExperience("API Integration Specialist", "Growbizz.io | Dec 2025 - Mar 2026", "Integrated APIs and collaborated with team members while maintaining a professional and positive work attitude. Demonstrated strong technical expertise.");
+        if (workExperienceRepository.count() == 0) {
+            seedExperience("API Integration Specialist", "Growbizz.io | Dec 2025 - Mar 2026", "Integrated APIs and collaborated with team members while maintaining a professional and positive work attitude. Demonstrated strong technical expertise.");
+        }
 
-        seedSkill("Frontend", "HTML", 90);
-        seedSkill("Frontend", "CSS", 85);
-        seedSkill("Frontend", "JavaScript", 80);
-        seedSkill("Frontend", "React", 75);
-        seedSkill("Frontend", "Bootstrap", 85);
-        seedSkill("Backend", "Java", 85);
-        seedSkill("Backend", "Spring Boot", 80);
-        seedSkill("Backend", "REST APIs", 80);
-        seedSkill("Backend", "Servlets", 75);
-        seedSkill("Backend", "JDBC", 75);
-        seedSkill("Database & Tools", "MySQL", 80);
-        seedSkill("Database & Tools", "Git", 75);
-        seedSkill("Database & Tools", "GitHub", 80);
-        seedSkill("Database & Tools", "VS Code", 85);
-        seedSkill("Database & Tools", "Eclipse", 80);
+        if (skillItemRepository.count() == 0) {
+            seedSkill("Frontend", "HTML", 90);
+            seedSkill("Frontend", "CSS", 85);
+            seedSkill("Frontend", "JavaScript", 80);
+            seedSkill("Frontend", "React", 75);
+            seedSkill("Frontend", "Bootstrap", 85);
+            seedSkill("Backend", "Java", 85);
+            seedSkill("Backend", "Spring Boot", 80);
+            seedSkill("Backend", "REST APIs", 80);
+            seedSkill("Backend", "Servlets", 75);
+            seedSkill("Backend", "JDBC", 75);
+            seedSkill("Database & Tools", "MySQL", 80);
+            seedSkill("Database & Tools", "GitHub", 80);
+            seedSkill("Database & Tools", "VS Code", 85);
+            seedSkill("Database & Tools", "Eclipse", 80);
+        }
     }
 
     private void seedProject(String title, String description, String technologies) {
