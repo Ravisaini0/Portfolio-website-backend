@@ -8,7 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 		"spring.datasource.driver-class-name=org.h2.Driver",
 		"spring.datasource.username=sa",
 		"spring.datasource.password=",
-		"spring.jpa.hibernate.ddl-auto=create-drop"
+		"spring.jpa.hibernate.ddl-auto=create-drop",
+		"app.jwt.secret=test-only-jwt-secret-value-32-chars",
+		"app.admin.username=test-admin",
+		"app.admin.password=test-password"
 })
 class ContactInfoApplicationTests {
 

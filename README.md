@@ -5,7 +5,7 @@ Spring Boot backend for the Ravi Saini portfolio website. It provides admin auth
 ## What Was Added / Updated
 
 - Added JWT-based admin login.
-- Added seeded default admin user.
+- Added environment-based admin user setup.
 - Added profile API for hero/about/contact/social information.
 - Added project CRUD APIs.
 - Added certificate CRUD and certificate file upload APIs.
@@ -42,6 +42,16 @@ Backend runs on:
 http://localhost:8081
 ```
 
+Required environment variables:
+
+```text
+JWT_SECRET=use-a-private-random-value-with-at-least-32-characters
+ADMIN_USERNAME=your-private-admin-username
+ADMIN_PASSWORD=your-private-admin-password
+```
+
+Do not commit real values to GitHub.
+
 Local database:
 
 ```text
@@ -63,22 +73,22 @@ http://localhost:8081/uploads/file-name
 
 ## Getting Started
 
-Run the backend:
-
-```bash
-mvn spring-boot:run
-```
-
-Or using the Maven wrapper:
-
-```bash
-./mvnw spring-boot:run
-```
-
-On Windows:
+Run the backend with environment variables:
 
 ```powershell
+$env:JWT_SECRET="replace-with-a-private-32-character-secret"
+$env:ADMIN_USERNAME="replace-with-your-admin-username"
+$env:ADMIN_PASSWORD="replace-with-your-admin-password"
 .\mvnw.cmd spring-boot:run
+```
+
+For Git Bash / Linux / macOS:
+
+```bash
+export JWT_SECRET="replace-with-a-private-32-character-secret"
+export ADMIN_USERNAME="replace-with-your-admin-username"
+export ADMIN_PASSWORD="replace-with-your-admin-password"
+./mvnw spring-boot:run
 ```
 
 Run tests:
@@ -376,23 +386,22 @@ Authorization: Bearer jwt-token
 
 ## Seeded Default Data
 
-When the app starts, it creates default data if missing:
+When the app starts, it creates default content data if missing:
 
-- Admin user
 - 3 default projects
 - 3 default certificates
 - 4 about cards
 - 1 work experience entry
 - 20 skill items
 
-This keeps the portfolio populated on a fresh local database.
+The admin user is created only when `ADMIN_USERNAME` and `ADMIN_PASSWORD` are provided through environment variables.
 
 ## Security Notes
 
 - Public users can read portfolio content and submit the contact form.
 - Admin login returns a JWT token.
 - Admin write, upload, and delete operations require `Authorization: Bearer token`.
-- Production deployments should set a strong `JWT_SECRET` and private admin credentials.
+- `JWT_SECRET`, `ADMIN_USERNAME`, and `ADMIN_PASSWORD` must stay private and should be configured in hosting environment variables.
 
 ## Files and Runtime Folders
 

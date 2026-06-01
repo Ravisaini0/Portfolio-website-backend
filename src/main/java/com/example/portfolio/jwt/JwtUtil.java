@@ -23,7 +23,7 @@ public class JwtUtil {
     @PostConstruct
     void init() {
         if (secret == null || secret.length() < 32) {
-            secret = "change-this-development-secret-key-32";
+            throw new IllegalStateException("JWT_SECRET must be set and must contain at least 32 characters.");
         }
         key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }

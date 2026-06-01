@@ -29,10 +29,10 @@ public class DataInitializer implements CommandLineRunner {
     private final SkillItemRepository skillItemRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${app.admin.username:admin}")
+    @Value("${app.admin.username:}")
     private String adminUsername;
 
-    @Value("${app.admin.password:admin123}")
+    @Value("${app.admin.password:}")
     private String adminPassword;
 
     public DataInitializer(
@@ -55,12 +55,17 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        adminRepository.findByUsername(adminUsername).orElseGet(() -> {
-            Admin admin = new Admin();
-            admin.setUsername(adminUsername);
-            admin.setPassword(passwordEncoder.encode(adminPassword));
-            return adminRepository.save(admin);
-        });
+        if (adminUsername != null && !adminUsername.isBlank() && adminPassword != null && !adminPassword.isBlank()) {
+            adminRepository.findByUsername(adminUsername).map(admin -> {
+                admin.setPassword(passwordEncoder.encode(adminPassword));
+                return adminRepository.save(admin);
+            }).orElseGet(() -> {
+                    Admin admin = new Admin();
+                    admin.setUsername(adminUsername);
+                    admin.setPassword(passwordEncoder.encode(adminPassword));
+                    return adminRepository.save(admin);
+            });
+        }
 
         if (projectRepository.count() == 0) {
             seedProject("Laundry Management System", "A comprehensive Spring Boot backend system featuring authentication, user management, admin controls, delivery management, shop management, and complete order handling workflows.", "Spring Boot,Java,MySQL,REST API");
