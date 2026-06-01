@@ -104,6 +104,8 @@ public class DataInitializer implements CommandLineRunner {
             seedSkill("AI Tools", "GitHub Copilot", 80);
             seedSkill("AI Tools", "Gemini", 75);
             seedSkill("AI Tools", "Cursor", 75);
+            seedSkill("AI Tools", "Claude Code", 75);
+            seedSkill("AI Tools", "Codex", 80);
         }
     }
 
