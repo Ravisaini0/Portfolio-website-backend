@@ -296,6 +296,7 @@ Example categories:
 - Frontend
 - Backend
 - Database & Tools
+- AI Tools
 
 ### Certificates
 
@@ -382,7 +383,7 @@ When the app starts, it creates default data if missing:
 - 3 default certificates
 - 4 about cards
 - 1 work experience entry
-- 14 skill items
+- 18 skill items
 
 This keeps the portfolio populated on a fresh local database.
 
