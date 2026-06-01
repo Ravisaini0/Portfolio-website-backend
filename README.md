@@ -42,13 +42,6 @@ Backend runs on:
 http://localhost:8081
 ```
 
-Default admin login:
-
-```text
-Username: admin
-Password: admin123
-```
-
 Local database:
 
 ```text
