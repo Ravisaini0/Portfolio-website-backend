@@ -126,6 +126,7 @@ public class DataInitializer implements CommandLineRunner {
         project.setDescription(description);
         project.setTechnologies(technologies);
         project.setGithubUrl("https://github.com/Ravisaini0");
+        project.setSection("project");
         projectRepository.save(project);
     }
 

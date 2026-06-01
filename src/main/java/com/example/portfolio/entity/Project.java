@@ -31,4 +31,6 @@ public class Project {
     private String liveUrl;
 
     private String imageUrl;
+
+    private String section;
 }
