@@ -60,21 +60,6 @@ Uploaded files are served from:
 http://localhost:8081/uploads/file-name
 ```
 
-## Environment Variables
-
-These values can be changed without editing code:
-
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `PORT` | `8081` | Backend server port |
-| `DB_URL` | `jdbc:h2:file:./data/portfolio;MODE=MySQL;AUTO_SERVER=TRUE` | Database URL |
-| `DB_USERNAME` | `sa` | Database username |
-| `DB_PASSWORD` | empty | Database password |
-| `JWT_SECRET` | `change-this-development-secret-key-32` | JWT signing secret |
-| `ADMIN_USERNAME` | `admin` | Seeded admin username |
-| `ADMIN_PASSWORD` | `admin123` | Seeded admin password |
-
-For production, change `JWT_SECRET`, `ADMIN_USERNAME`, and `ADMIN_PASSWORD`.
 
 ## Getting Started
 
@@ -115,8 +100,8 @@ Request:
 
 ```json
 {
-  "username": "admin",
-  "password": "admin123"
+  "username": "****",
+  "password": "*******"
 }
 ```
 
