@@ -16,4 +16,27 @@ public class Certificate {
     private String name;
 
     private String filePath;
+
+    private String title;
+
+    private String issuer;
+
+    private String duration;
+
+    private String location;
+
+    private String date;
+
+    private String grade;
+
+    private String registrationNo;
+
+    private String certificateNo;
+
+    private String type;
+
+    @Column(length = 1000)
+    private String description;
+
+    private String imageUrl;
 }

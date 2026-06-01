@@ -19,4 +19,14 @@ public class ContactController {
     public Contact saveContact(@Valid @RequestBody Contact contact) {
         return service.save(contact);
     }
+
+    @GetMapping
+    public java.util.List<Contact> getContacts() {
+        return service.findAll();
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteContact(@PathVariable Long id) {
+        service.delete(id);
+    }
 }

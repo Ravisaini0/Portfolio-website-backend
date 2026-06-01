@@ -14,4 +14,12 @@ private ContactRepository repo;
 public Contact save(Contact contact) {
 	return repo.save(contact);
 }
+
+public java.util.List<Contact> findAll() {
+	return repo.findAll();
+}
+
+public void delete(Long id) {
+	repo.deleteById(id);
+}
 }
