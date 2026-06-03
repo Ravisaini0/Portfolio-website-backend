@@ -416,6 +416,8 @@ uploads/
 
 `uploads/` contains uploaded profile, project, and certificate files.
 
+For production, use persistent storage for `uploads/` or store stable public image URLs from services such as Cloudinary/Supabase Storage. Local upload folders on free hosting can be removed during restarts or redeploys.
+
 ## Frontend Pairing
 
 This backend is designed to run with the frontend project:

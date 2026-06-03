@@ -2,15 +2,13 @@ package com.example.portfolio.controller;
 
 import com.example.portfolio.entity.Certificate;
 import com.example.portfolio.repository.CertificateRepository;
+import com.example.portfolio.service.UploadStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 @RestController
 @RequestMapping({"/api/files", "/api/certificates"})
@@ -18,6 +16,9 @@ public class FileController {
 
     @Autowired
     private CertificateRepository repository;
+
+    @Autowired
+    private UploadStorageService uploadStorageService;
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadCertificate(
@@ -31,20 +32,16 @@ public class FileController {
             @RequestParam(value = "type", required = false) String type,
             @RequestParam(value = "description", required = false) String description
     ) throws IOException {
-
-        Path uploadDir = Path.of("uploads").toAbsolutePath().normalize();
-        Files.createDirectories(uploadDir);
-
-        String originalName = file.getOriginalFilename() == null ? "certificate" : file.getOriginalFilename();
-        String safeName = originalName.replaceAll("[^a-zA-Z0-9._-]", "-");
-        String fileName = System.currentTimeMillis() + "-" + safeName;
-        Path target = uploadDir.resolve(fileName).normalize();
-        Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
-        String filePath = target.toString();
+        String uploadPath = uploadStorageService.store(file);
 
         Certificate certificate = id == null
                 ? new Certificate()
                 : repository.findById(id).orElseGet(Certificate::new);
+
+        if (id != null && certificate.getId() != null) {
+            uploadStorageService.deleteIfLocalUpload(certificate.getImageUrl());
+            uploadStorageService.deleteIfLocalUpload(certificate.getFilePath());
+        }
 
         if (id != null) {
             certificate.setId(id);
@@ -58,8 +55,8 @@ public class FileController {
         certificate.setLocation(location);
         certificate.setType(type);
         certificate.setDescription(description);
-        certificate.setFilePath(filePath);
-        certificate.setImageUrl("/uploads/" + fileName);
+        certificate.setFilePath(uploadPath);
+        certificate.setImageUrl(uploadPath);
 
         Certificate saved = repository.save(certificate);
 
@@ -71,6 +68,12 @@ public class FileController {
         if (certificate.getName() == null || certificate.getName().isBlank()) {
             certificate.setName(certificate.getTitle());
         }
+        if (certificate.getId() != null) {
+            repository.findById(certificate.getId())
+                    .map(Certificate::getImageUrl)
+                    .filter(oldImage -> isDifferent(oldImage, certificate.getImageUrl()))
+                    .ifPresent(uploadStorageService::deleteIfLocalUpload);
+        }
         return ResponseEntity.ok(repository.save(certificate));
     }
 
@@ -81,9 +84,18 @@ public class FileController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCertificate(@PathVariable Long id) {
-
+        repository.findById(id).ifPresent(certificate -> {
+            uploadStorageService.deleteIfLocalUpload(certificate.getImageUrl());
+            uploadStorageService.deleteIfLocalUpload(certificate.getFilePath());
+        });
         repository.deleteById(id);
 
         return ResponseEntity.ok("Deleted Successfully");
+    }
+
+    private boolean isDifferent(String oldValue, String newValue) {
+        String oldText = oldValue == null ? "" : oldValue.trim();
+        String newText = newValue == null ? "" : newValue.trim();
+        return !oldText.equals(newText);
     }
 }

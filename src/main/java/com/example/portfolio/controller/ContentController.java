@@ -1,9 +1,6 @@
 package com.example.portfolio.controller;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +18,7 @@ import com.example.portfolio.entity.Project;
 import com.example.portfolio.entity.SiteProfile;
 import com.example.portfolio.repository.ProjectRepository;
 import com.example.portfolio.repository.SiteProfileRepository;
+import com.example.portfolio.service.UploadStorageService;
 
 @RestController
 @RequestMapping("/api")
@@ -28,10 +26,15 @@ public class ContentController {
 
     private final SiteProfileRepository siteProfileRepository;
     private final ProjectRepository projectRepository;
+    private final UploadStorageService uploadStorageService;
 
-    public ContentController(SiteProfileRepository siteProfileRepository, ProjectRepository projectRepository) {
+    public ContentController(
+            SiteProfileRepository siteProfileRepository,
+            ProjectRepository projectRepository,
+            UploadStorageService uploadStorageService) {
         this.siteProfileRepository = siteProfileRepository;
         this.projectRepository = projectRepository;
+        this.uploadStorageService = uploadStorageService;
     }
 
     @GetMapping("/profile")
@@ -41,6 +44,10 @@ public class ContentController {
 
     @PutMapping("/profile")
     public SiteProfile updateProfile(@RequestBody SiteProfile profile) {
+        siteProfileRepository.findById(1L)
+                .map(SiteProfile::getProfileImageUrl)
+                .filter(oldImage -> isDifferent(oldImage, profile.getProfileImageUrl()))
+                .ifPresent(uploadStorageService::deleteIfLocalUpload);
         profile.setId(1L);
         return siteProfileRepository.save(profile);
     }
@@ -52,30 +59,32 @@ public class ContentController {
 
     @PostMapping("/projects")
     public Project saveProject(@RequestBody Project project) {
+        if (project.getId() != null) {
+            projectRepository.findById(project.getId())
+                    .map(Project::getImageUrl)
+                    .filter(oldImage -> isDifferent(oldImage, project.getImageUrl()))
+                    .ifPresent(uploadStorageService::deleteIfLocalUpload);
+        }
         return projectRepository.save(project);
     }
 
     @DeleteMapping("/projects/{id}")
     public void deleteProject(@PathVariable Long id) {
+        projectRepository.findById(id)
+                .map(Project::getImageUrl)
+                .ifPresent(uploadStorageService::deleteIfLocalUpload);
         projectRepository.deleteById(id);
     }
 
     @PostMapping("/uploads")
     public java.util.Map<String, String> upload(@RequestParam("file") MultipartFile file) throws IOException {
-        if (file.isEmpty()) {
-            throw new IllegalArgumentException("Uploaded file is empty");
-        }
+        return java.util.Map.of("url", uploadStorageService.store(file));
+    }
 
-        Path uploadDir = Path.of("uploads").toAbsolutePath().normalize();
-        Files.createDirectories(uploadDir);
-
-        String originalName = file.getOriginalFilename() == null ? "upload" : file.getOriginalFilename();
-        String safeName = originalName.replaceAll("[^a-zA-Z0-9._-]", "-");
-        String fileName = System.currentTimeMillis() + "-" + safeName;
-        Path target = uploadDir.resolve(fileName).normalize();
-        Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
-
-        return java.util.Map.of("url", "/uploads/" + fileName);
+    private boolean isDifferent(String oldValue, String newValue) {
+        String oldText = oldValue == null ? "" : oldValue.trim();
+        String newText = newValue == null ? "" : newValue.trim();
+        return !oldText.equals(newText);
     }
 
     private SiteProfile defaultProfile() {
