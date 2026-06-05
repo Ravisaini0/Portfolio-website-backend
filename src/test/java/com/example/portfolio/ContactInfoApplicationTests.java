@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 		"spring.datasource.username=sa",
 		"spring.datasource.password=",
 		"spring.jpa.hibernate.ddl-auto=create-drop",
+		"spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
 		"app.jwt.secret=test-only-jwt-secret-value-32-chars",
 		"app.admin.username=test-admin",
 		"app.admin.password=test-password"

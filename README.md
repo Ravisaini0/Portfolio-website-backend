@@ -48,6 +48,10 @@ Required environment variables:
 JWT_SECRET=use-a-private-random-value-with-at-least-32-characters
 ADMIN_USERNAME=your-private-admin-username
 ADMIN_PASSWORD=your-private-admin-password
+SPRING_DATASOURCE_URL=jdbc:mysql://host:3306/database?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+SPRING_DATASOURCE_USERNAME=database-username
+SPRING_DATASOURCE_PASSWORD=database-password
+HIBERNATE_DIALECT=org.hibernate.dialect.MySQLDialect
 ```
 
 Do not commit real values to GitHub.
@@ -79,6 +83,9 @@ Run the backend with environment variables:
 $env:JWT_SECRET="replace-with-a-private-32-character-secret"
 $env:ADMIN_USERNAME="replace-with-your-admin-username"
 $env:ADMIN_PASSWORD="replace-with-your-admin-password"
+$env:SPRING_DATASOURCE_URL="jdbc:mysql://host:3306/database?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+$env:SPRING_DATASOURCE_USERNAME="database-username"
+$env:SPRING_DATASOURCE_PASSWORD="database-password"
 .\mvnw.cmd spring-boot:run
 ```
 
@@ -88,6 +95,9 @@ For Git Bash / Linux / macOS:
 export JWT_SECRET="replace-with-a-private-32-character-secret"
 export ADMIN_USERNAME="replace-with-your-admin-username"
 export ADMIN_PASSWORD="replace-with-your-admin-password"
+export SPRING_DATASOURCE_URL="jdbc:mysql://host:3306/database?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+export SPRING_DATASOURCE_USERNAME="database-username"
+export SPRING_DATASOURCE_PASSWORD="database-password"
 ./mvnw spring-boot:run
 ```
 
@@ -402,6 +412,7 @@ The admin user is created only when `ADMIN_USERNAME` and `ADMIN_PASSWORD` are pr
 - Admin login returns a JWT token.
 - Admin write, upload, and delete operations require `Authorization: Bearer token`.
 - `JWT_SECRET`, `ADMIN_USERNAME`, and `ADMIN_PASSWORD` must stay private and should be configured in hosting environment variables.
+- On hosting, prefer `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, and `SPRING_DATASOURCE_PASSWORD` for database connection settings.
 
 ## Files and Runtime Folders
 
